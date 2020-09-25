@@ -13,7 +13,6 @@ public class TEA {
 		String key[] = keyInput("Input the key (max/min length 4 symbols): ", s, 4);
 		s.close();
 		
-		
 		//================================================================Input block
 		
 		System.out.println("\n");
@@ -26,7 +25,6 @@ public class TEA {
 		String leftMainWord = stringToBinarString(mainWord.substring(4, 8));
 		System.out.println("\nKeys: ");
 		String binaryKey[] = keyBinaryEncrypt(key);
-	
 		
 		//================================================================Binary encrypt block
 		
@@ -34,134 +32,130 @@ public class TEA {
 		
 		//Not paired part ENCRYPT================================================================
 		
-		//1. The right side is shifted to the left by 4 bits
 		System.out.print("1. ");
 		String notPaired1 = leftShift(binarStringToLong(leftMainWord), 0, 4);
-		//2. The value K0 mod2 ^ 32 is added to the result (1).
+		
 		System.out.print("2. ");
 		String notPaired2 = addition(binarStringToLong(notPaired1), binarStringToLong(binaryKey[0]));
-		//3. Add the value (step) * delta to the right side.
+		
 		System.out.print("3. ");
 		String notPaired3 = addition(binarStringToLong(leftMainWord), DELTA);
-		//4. Result 2 step XOR Result 3 step.
+		
 		System.out.print("4. ");
 		String notPaired4 = XOR(binarStringToLong(notPaired2), binarStringToLong(notPaired3));
-		//5. On the right side, we shift to the right by 5 bits
+		
 		System.out.print("5. ");
 		String notPaired5 = leftShift(binarStringToLong(leftMainWord), 1, 5);
-		//6. Add the value K1 mod2 ^ 32 to the result of the 5th step
+		
 		System.out.print("6. ");
 		String notPaired6 = addition(binarStringToLong(notPaired5), binarStringToLong(binaryKey[1]));
-		//7. Result of 4 steps XOR result of step 6
+		
 		System.out.print("7. ");
 		String notPaired7 = XOR(binarStringToLong(notPaired4), binarStringToLong(notPaired6));
-		//8. To the left side add the result from step 7 mod2 ^ 32
+		
 		System.out.print("8. ");
 		String notPaired8 = addition(binarStringToLong(rightMainWord), binarStringToLong(notPaired7));
 
 		rightMainWord = notPaired8;
+		
 		//================================================================Not paired part ENCRYPT
 		
 		System.out.println("\n\nPaired part ENCRYPT\n\n");
 		
 		//Paired part ENCRYPT================================================================
 		
-		//1. The right side is shifted to the left by 4 bits
 		System.out.print("1. ");
 		String Paired1 = leftShift(binarStringToLong(rightMainWord), 0, 4);
-		//2. The value K0 mod2 ^ 32 is added to the result (1).
+		
 		System.out.print("2. ");
 		String Paired2 = addition(binarStringToLong(Paired1), binarStringToLong(binaryKey[2]));
-		//3. Add the value (step) * delta to the right side.
+		
 		System.out.print("3. ");
 		String Paired3 = addition(binarStringToLong(rightMainWord), DELTA);
-		//4. Result 2 step XOR Result 3 step.
+		
 		System.out.print("4. ");
 		String Paired4 = XOR(binarStringToLong(Paired2), binarStringToLong(Paired3));
-		//5. On the right side, we shift to the right by 5 bits
+		
 		System.out.print("5. ");
 		String Paired5 = leftShift(binarStringToLong(rightMainWord), 1, 5);
-		//6. Add the value K1 mod2 ^ 32 to the result of the 5th step
+		
 		System.out.print("6. ");
 		String Paired6 = addition(binarStringToLong(Paired5), binarStringToLong(binaryKey[3]));
-		//7. Result of 4 steps XOR result of step 6
+		
 		System.out.print("7. ");
 		String Paired7 = XOR(binarStringToLong(Paired4), binarStringToLong(Paired6));
-		//8. To the left side add the result from step 7 mod2 ^ 32
+		
 		System.out.print("8. ");
 		String Paired8 = addition(binarStringToLong(leftMainWord), binarStringToLong(Paired7));
 		
 		leftMainWord = Paired8;
-		//================================================================Paired part ENCRYPT
 		
+		//================================================================Paired part ENCRYPT
 		
 		System.out.println("\nLeft part: " + leftMainWord + " => " + binarStringToLong(leftMainWord));
 		System.out.println("Right part: " + rightMainWord + " => " + binarStringToLong(rightMainWord) +"\n");
-		
 		System.out.println("\n\nPaired part DESCRYPT\n\n");
-		
-		
 		
 		//Not paired part DECRYPT================================================================
 		
-		//1. The right side is shifted to the left by 4 bits
 		System.out.print("1. ");
 		String dPaired1 = leftShift(binarStringToLong(rightMainWord), 0, 4);
-		//2. The value K0 mod2 ^ 32 is added to the result (1).
+		
 		System.out.print("2. ");
 		String dPaired2 = addition(binarStringToLong(dPaired1), binarStringToLong(binaryKey[2]));
-		//3. Add the value (step) * delta to the right side.
+		
 		System.out.print("3. ");
 		String dPaired3 = addition(binarStringToLong(rightMainWord), DELTA);
-		//4. Result 2 step XOR Result 3 step.
+		
 		System.out.print("4. ");
 		String dPaired4 = XOR(binarStringToLong(dPaired2), binarStringToLong(dPaired3));
-		//5. On the right side, we shift to the right by 5 bits
+		
 		System.out.print("5. ");
 		String dPaired5 = leftShift(binarStringToLong(rightMainWord), 1, 5);
-		//6. Add the value K1 mod2 ^ 32 to the result of the 5th step
+		
 		System.out.print("6. ");
 		String dPaired6 = addition(binarStringToLong(dPaired5), binarStringToLong(binaryKey[3]));
-		//7. Result of 4 steps XOR result of step 6
+		
 		System.out.print("7. ");
 		String dPaired7 = XOR(binarStringToLong(dPaired4), binarStringToLong(dPaired6));
-		//8. To the left side add the result from step 7 mod2 ^ 32
+		
 		System.out.print("8. ");
 		String dPaired8 = minus(binarStringToLong(leftMainWord), binarStringToLong(dPaired7));
 
 		leftMainWord = dPaired8;
+		
 		//================================================================Not paired part DECRYPT
 		
 		System.out.println("\n\nNot paired part DECRYPT\n\n");
 		
 		//Not paired part DECRYPT================================================================
 		
-		//1. The right side is shifted to the left by 4 bits
 		System.out.print("1. ");
 		String dNotPaired1 = leftShift(binarStringToLong(leftMainWord), 0, 4);
-		//2. The value K0 mod2 ^ 32 is added to the result (1).
+		
 		System.out.print("2. ");
 		String dNotPaired2 = addition(binarStringToLong(dNotPaired1), binarStringToLong(binaryKey[0]));
-		//3. Add the value (step) * delta to the right side.
+		
 		System.out.print("3. ");
 		String dNotPaired3 = addition(binarStringToLong(leftMainWord), DELTA);
-		//4. Result 2 step XOR Result 3 step.
+		
 		System.out.print("4. ");
 		String dNotPaired4 = XOR(binarStringToLong(dNotPaired2), binarStringToLong(dNotPaired3));
-		//5. On the right side, we shift to the right by 5 bits
+		
 		System.out.print("5. ");
 		String dNotPaired5 = leftShift(binarStringToLong(leftMainWord), 1, 5);
-		//6. Add the value K1 mod2 ^ 32 to the result of the 5th step
+		
 		System.out.print("6. ");
 		String dNotPaired6 = addition(binarStringToLong(dNotPaired5), binarStringToLong(binaryKey[1]));
-		//7. Result of 4 steps XOR result of step 6
+		
 		System.out.print("7. ");
 		String dNotPaired7 = XOR(binarStringToLong(dNotPaired4), binarStringToLong(dNotPaired6));
-		//8. To the left side add the result from step 7 mod2 ^ 32
+		
 		System.out.print("8. ");
 		String dNotPaired8 = minus(binarStringToLong(rightMainWord), binarStringToLong(dNotPaired7));
 
 		rightMainWord = dNotPaired8;
+		
 		//================================================================Not paired part DECRYPT
 		
 		leftMainWord = addZero(leftMainWord);
@@ -290,7 +284,6 @@ public class TEA {
 	}
 	
 	//================================================================Encryption
-	
 	
 	//Decryption================================================================
 	
